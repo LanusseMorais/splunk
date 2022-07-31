@@ -30,8 +30,20 @@ Esses cursos são da splunk e são gratuitos (Verificado 31/07/2022 às 16:40)
 
 ## Instalação
 
-
 Quando a instalação é feita de forma descentralizada, as indexer precisam ter um alto desempenho de disco e muito espaço para escrita, por outro lado as Search Heads precisam de mais CPU
+
+## Executar ambiente de teste. 
+> **_Aviso:_**  Para subir esse laboratório, você precisa ter instalado o vagrant e o virtualbox.
+
+```shell
+$ vagrant up
+```
+Agora você pode acessar o ambiente através da url http://192.168.165.30:8000 usando as credencias abaixo:  
+username: admin  
+password: lanusse@123  
+Você pode alterar a senha no arquivo Vagrantfile alterando a variável **PASS_ADMIN**
+
+![](/static/acesso.gif)
 
 ### Notas  
 <span id="f1"></span> [**S**earch **P**rocessing **L**anguage](https://docs.splunk.com/Documentation/Splunk/latest/Search/Aboutthesearchlanguage) [$\hookleftarrow$](#a1)
