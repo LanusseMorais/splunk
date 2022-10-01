@@ -1,0 +1,65 @@
+---
+- name: Definindo TimeZone como America/Sao_Paulo
+  timezone:
+    name: America/Sao_Paulo
+
+- name: Criando usuario splunk
+  user:
+    name: splunk
+    comment: splunk user
+
+- name: Copia instalador da máquina local
+  copy:
+    src: /home/lanusse/Downloads/splunk-9.0.1-82c987350fde-linux-2.6-x86_64.rpm
+    dest: /tmp/
+
+- name: Instalando Splunk
+  dnf:
+    name: "/tmp/splunk-9.0.1-82c987350fde-linux-2.6-x86_64.rpm"
+    disable_gpg_check: yes
+    state: installed
+
+- name: Criando env_var SPLUNK_HOME
+  lineinfile:
+    dest: /etc/profile.d/splunk_var.sh
+    line: "export SPLUNK_HOME=/opt/splunk/"
+    create: yes
+    state: present
+
+- name: Adicionando os comandos do splunk ao PATH
+  lineinfile:
+    dest: /etc/profile.d/custom_path.sh
+    line: "export PATH=$PATH:/opt/splunk/bin"
+    create: yes
+    state: present
+
+- name: Configurando senha de Admin
+  shell: /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd {{splunk_pass_admin}}
+
+- name: Parando processo do splunk
+  shell: /opt/splunk/bin/splunk stop
+
+- name: Criando unit service do Splunk
+  shell: /opt/splunk/bin/splunk enable boot-start -systemd-managed 1 -user splunk -group splunk
+
+- name: Ajustando unit Splunkd
+  lineinfile:
+    path: /etc/systemd/system/Splunkd.service
+    regexp: "ExecStartPost"
+    line: "ExecStartPre"
+    state: present
+
+- name: Ajustando permissão no dir /opt/splunk para o user splunk
+  file:
+    dest: /opt/splunk
+    owner: splunk
+    group: splunk
+    mode: u+rw
+    recurse: yes
+
+- name: Iniciando serviço Splunkd
+  systemd:
+    daemon_reload: yes
+    name: Splunkd
+    state: restarted
+    enabled: yes

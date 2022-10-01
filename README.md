@@ -10,11 +10,11 @@ Em poucas palavras o splunk é uma ferramenta bem poderosa, para armazenar logs.
 
 
 ## Componentes
-O splunk pode ser subdividido em componentes sendo eles:
+O splunk pode ser subdividido em componentes sendo alguns deles:
 
 Nome | função
 ---|---
-Indexer| Armazenas os dados em índices, isso aumenta a velocidade de busca e análise dos dados.
+Indexer| Armazena os dados em índices, isso aumenta a velocidade de busca e análise dos dados.
 Search Head| Permite que os usuários usem <span id="a1">[[1]](#f1)</span> SPL para buscar os dados armazenados nas Indexers.
 Fowarder| Consomem os dados e encaminham para as indexers, geralmente ficam onde os dados são gerados.
 Deployer| Gerencia e distribui os aplicativos para um cluster de Search Heads
@@ -40,7 +40,7 @@ $ vagrant up
 ```
 Agora você pode acessar o ambiente através da url http://192.168.165.30:8000 usando as credencias abaixo:  
 username: admin  
-password: lanusse@123  
+password: splunk@123  
 Você pode alterar a senha no arquivo Vagrantfile alterando a variável **PASS_ADMIN**
 
 ![](/static/acesso.gif)

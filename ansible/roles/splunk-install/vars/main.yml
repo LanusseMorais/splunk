@@ -1,0 +1,5 @@
+---
+splunk_pass_admin: splunk_pass_admin
+splunk_url_download: splunk_url_download
+#splunk_url_download: "https://download.splunk.com/products/splunk/releases/8.1.9/linux/splunk-8.1.9-a16db3287b56-linux-2.6-x86_64-fips.rpm"
+#splunk_url_download: "https://download.splunk.com/products/splunk/releases/9.0.1/linux/splunk-9.0.1-82c987350fde-linux-2.6-x86_64.rpm"
