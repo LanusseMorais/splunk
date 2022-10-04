@@ -4,3 +4,4 @@ olhar
 */.vagrant/**
 .vscode
 *log
+pacotes/*
