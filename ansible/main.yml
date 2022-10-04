@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become:  true
+  roles:
+    - {role: splunk-install,when: "not 'ngnix' in group_names"}
+    - {role: splunk-indexers, when: "['splunk_master','indexers'] in group_names"}
+    - {role: splunk-search-heads, when: "'searchs' in group_names"}
+    - {role: nginx, when: "'ngnix' in group_names"}
+    
+    
