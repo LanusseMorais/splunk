@@ -1,0 +1,14 @@
+upstream splunk {
+    ip_hash;
+    server 192.168.165.21:8000;
+    server 192.168.165.22:8000;
+    server 192.168.165.23:8000;
+}
+
+server {
+    listen 80;
+
+    location / {
+        proxy_pass http://splunk;
+    }
+}

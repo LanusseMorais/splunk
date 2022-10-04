@@ -1,0 +1,14 @@
+- name: Cria arquivo de configuração search.conf
+  template:
+    src: search.conf.j2
+    dest: /etc/nginx/conf.d/search.conf
+    owner: nginx
+    group: nginx
+    mode: "0644"
+
+- name: Reiniciando serviço do NGINX
+  systemd:
+    daemon_reload: yes
+    name: nginx
+    state: restarted
+    enabled: yes

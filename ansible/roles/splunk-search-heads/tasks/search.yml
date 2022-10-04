@@ -1,0 +1,9 @@
+---
+- name: Confiura Search node
+  shell: splunk edit cluster-config -mode searchhead -manager_uri https://192.168.165.10:8089 -secret splunk@123 -auth admin:splunk@123
+  become_user: splunk
+
+- name: Restart serviço Splunkd
+  systemd:
+    name: Splunkd
+    state: restarted

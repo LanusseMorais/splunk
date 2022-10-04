@@ -32,9 +32,11 @@ Esses cursos são da splunk e são gratuitos (Verificado 31/07/2022 às 16:40)
 
 Quando a instalação é feita de forma descentralizada, as indexer precisam ter um alto desempenho de disco e muito espaço para escrita, por outro lado as Search Heads precisam de mais CPU
 
-## Executar ambiente de teste. 
+## Executar ambiente de teste StandAlone
+No modo standAlone uma  única instancia do splunk executa a função de todos os componentes
 > **_Aviso:_**  Para subir esse laboratório, você precisa ter instalado o vagrant e o virtualbox.
 
+Acesse diretório **standalone** e execute o comando abaixo
 ```shell
 $ vagrant up
 ```

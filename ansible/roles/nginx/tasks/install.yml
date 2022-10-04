@@ -1,0 +1,26 @@
+---
+- name: Instalando NGINX
+  dnf:
+    name: "nginx"
+    state: installed
+
+- name: Desabilita selinux
+  shell: setenforce 0
+
+# - name: Liberando regras de firewall
+#   firewalld:
+#     zone: public
+#     service: "{{ item }}"
+#     permanent: yes
+#     immediate: yes
+#     state: enabled
+#   notify: reload firewalld
+#   loop:
+#     - https
+#     - http
+
+- name: Iniciando serviço do NGINX
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

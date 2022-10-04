@@ -1,0 +1,9 @@
+---
+- name: Verifica se o splunk está instalado
+  ansible.builtin.stat:
+    path: /opt/splunk/bin/splunk
+  register: splunk_bin
+
+- name: Configura splunk
+  include_tasks: search.yml
+  when: not splunk_bin.stat.exists

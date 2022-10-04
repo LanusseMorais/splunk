@@ -1,0 +1,9 @@
+---
+- name: Habilita master node
+  shell: splunk edit cluster-config -mode manager -replication_factor 2 -search_factor 2 -secret splunk@123 -cluster_label idx0 -auth admin:splunk@123
+  become_user: splunk
+
+- name: Restart serviço Splunkd
+  systemd:
+    name: Splunkd
+    state: restarted
