@@ -1,8 +1,6 @@
 ---
-- name: Configura Master
-  include_tasks: master.yml
+- import_tasks: master.yml
   when: splunk-master is defined
 
-- name: Configura Indexers
-  include_tasks: indexer.yml
+- import_tasks: indexer.yml
   when: not splunk-master is defined

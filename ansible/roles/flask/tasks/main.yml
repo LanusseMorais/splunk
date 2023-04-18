@@ -1,0 +1,7 @@
+---
+- import_role:
+      name: nginx
+- import_tasks: install.yml
+- import_tasks: configure.yml
+- import_role:
+      name: splunk-fowarder

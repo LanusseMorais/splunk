@@ -1,0 +1,13 @@
+---
+- name: Instalando o Python 3 e o pip
+  package:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Instalando o Flask
+  pip:
+    name:
+      - Flask
+    state: present

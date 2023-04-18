@@ -1,0 +1,32 @@
+---
+- name: Cria o diretório do Flask
+  file:
+    path: "{{app_dir}}"
+    state: directory
+
+- name: Cria arquivo da Aplicação
+  template:
+    src: app.py.j2
+    dest: "{{app_dir}}/app.py"
+    owner: nginx
+    group: nginx
+    mode: "0755"
+
+- name: Cria unit da Aplicação
+  template:
+    src: flask_app.service.j2
+    dest: /etc/systemd/system/flask_app.service
+    mode: "0755"
+
+- name: Iniciando serviço da aplicação
+  systemd:
+    name: flask_app
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+
+- name: Iniciando serviço do NGINX
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

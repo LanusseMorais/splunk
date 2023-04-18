@@ -4,9 +4,8 @@
     path: /sbin/nginx
   register: nginx_bin
 
-- name: Instala NGINX caso não esteja instalado
-  include_tasks: install.yml
+- import_tasks: install.yml
   when: not nginx_bin.stat.exists
 
-- name: Configura NGINX
-  include_tasks: configure.yml
+- import_tasks: configure.yml
+  when: not nginx_bin.stat.exists

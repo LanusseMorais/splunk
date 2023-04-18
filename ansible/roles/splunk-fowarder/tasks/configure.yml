@@ -1,0 +1,20 @@
+---
+- name: Cria arquivo de inputs
+  template:
+    src: inputs.conf.j2
+    dest: /opt/splunkforwarder/etc/system/local/inputs.conf
+    owner: splunk
+    mode: "0644"
+
+- name: Cria arquivo de outputs
+  template:
+    src: outputs.conf.j2
+    dest: /opt/splunkforwarder/etc/system/local/outputs.conf
+    owner: splunk
+    mode: "0644"
+
+- name: Reiniciando o serviço SplunkForwarder
+  systemd:
+    name: SplunkForwarder
+    state: restarted
+    enabled: yes

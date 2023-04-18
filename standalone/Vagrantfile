@@ -1,0 +1,65 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby  :
+
+#Variavéis 
+IMAGE_NAME = "almalinux/9"
+SPLUNK_MEMORY=4096
+SPLUNK_VCPU=4
+SPLUNK_PASS_ADMIN="splunk@123"
+NETWORK_PREFIX="192.168.165"
+VM_GROUP_NAME="SPLUNK"
+SPLUNK_URL_DOWNLOAD="sua_url_vem_aqui"
+SPLUNK_FOWARDER_URL_DOWNLOAD="sua_url_vem_aqui"
+
+Vagrant.configure("2") do |config|
+
+    config.vm.define "splunk" do |splunk|
+        splunk.vm.box = IMAGE_NAME
+        splunk.vm.network "private_network", ip: "#{NETWORK_PREFIX}.30"
+        splunk.vm.hostname = "splunk"
+        splunk.vm.provider :virtualbox do |vb|
+            vb.name = "splunk"
+            vb.memory = SPLUNK_MEMORY
+            vb.cpus = SPLUNK_VCPU
+            vb.customize ["modifyvm", :id, "--groups", "/#{VM_GROUP_NAME}"]
+        end        
+        splunk.vm.provision "ansible" do |ansible|
+            ansible.playbook = "../ansible/main.yml"
+            ansible.groups = {
+                "splunk" => ["splunk"]
+            }
+            ansible.extra_vars = {
+                ansible_python_interpreter: "/usr/bin/python",
+                splunk_pass_admin: SPLUNK_PASS_ADMIN,
+                splunk_url_download: SPLUNK_URL_DOWNLOAD,
+                ansible_remote_tmp: "/tmp"
+            }
+        end
+    end
+    config.vm.define "app" do |app|
+        app.vm.box = IMAGE_NAME
+        app.vm.network "private_network", ip: "#{NETWORK_PREFIX}.40"
+        app.vm.hostname = "app"
+        app.vm.provider :virtualbox do |vb|
+            vb.name = "app"
+            vb.memory = SPLUNK_MEMORY
+            vb.cpus = SPLUNK_VCPU
+            vb.customize ["modifyvm", :id, "--groups", "/#{VM_GROUP_NAME}"]
+        end        
+        app.vm.provision "ansible" do |ansible|
+            ansible.playbook = "../ansible/main.yml"
+            ansible.groups = {
+                "app" => ["app"]
+
+            }
+            ansible.extra_vars = {
+                ansible_python_interpreter: "/usr/bin/python",
+                splunk_master_ip: "#{NETWORK_PREFIX}.30",
+                splunk_fowarder_url_download: SPLUNK_FOWARDER_URL_DOWNLOAD,
+                flask_port: "5000",
+                ansible_remote_tmp: "/tmp"
+            }
+        end
+    end
+    
+end

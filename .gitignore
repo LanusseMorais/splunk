@@ -1,7 +1,7 @@
 anotações.md
 olhar
-.vagrant/**
-*/.vagrant/**
+.vagrant/
 .vscode
 *log
-pacotes/*
+*.rpm
+cluster_docker/
