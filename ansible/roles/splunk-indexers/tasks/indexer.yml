@@ -1,0 +1,13 @@
+---
+- name: Configura peer node indexer
+  shell: splunk edit cluster-config -mode peer -manager_uri https://192.168.165.10:8089 -replication_port 9887 -secret splunk@123 -auth admin:splunk@123
+  become_user: splunk
+
+- name: Desabilita interface  WEB indexer
+  shell: splunk disable webserver
+  become_user: splunk
+
+- name: Restart serviço Splunkd
+  systemd:
+    name: Splunkd
+    state: restarted

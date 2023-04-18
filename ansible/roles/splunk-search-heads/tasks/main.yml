@@ -4,5 +4,5 @@
     path: /opt/splunk/bin/splunk
   register: splunk_bin
 
-- import_tasks: install.yml
+- import_tasks: search.yml
   when: not splunk_bin.stat.exists

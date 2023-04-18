@@ -1,0 +1,10 @@
+---
+- name: Verifica se o splunkforwarder está instalado
+  ansible.builtin.stat:
+    path: /opt/splunkforwarder/bin/splunk
+  register: splunkforwarder_bin
+
+- import_tasks: install.yml
+  when: not splunkforwarder_bin.stat.exists
+- import_tasks: configure.yml
+  when: not splunkforwarder_bin.stat.exists

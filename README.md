@@ -32,10 +32,17 @@ Esses cursos são da splunk e são gratuitos (Verificado 31/07/2022 às 16:40)
 
 Quando a instalação é feita de forma descentralizada, as indexer precisam ter um alto desempenho de disco e muito espaço para escrita, por outro lado as Search Heads precisam de mais CPU
 
-## Executar ambiente de teste. 
+## Executar ambiente de teste StandAlone
+No modo standAlone uma  única instancia do splunk executa a função de todos os componentes
 > **_Aviso:_**  Para subir esse laboratório, você precisa ter instalado o vagrant e o virtualbox.
 
+Primeiro edite o arquivo [**standalone/Vagrantfile**](standalone/Vagrantfile) e informe as URL's de download do pacotes RPM do splunk enterprise e splunk fowarder
+
+![](/static/urls.gif)
+
+Acesse diretório [**standalone**](standalone/) e execute o comando abaixo
 ```shell
+$ cd standalone
 $ vagrant up
 ```
 Agora você pode acessar o ambiente através da url http://192.168.165.30:8000 usando as credencias abaixo:  
@@ -45,5 +52,12 @@ Você pode alterar a senha no arquivo Vagrantfile alterando a variável **PASS_A
 
 ![](/static/acesso.gif)
 
+Esse repo também sobe uma aplicação simples que pode ser acessada através da url http://192.168.165.40
+
+![](/static/app.gif)
+
+Você já deve ser capaz de ver os logs da aplicação no splunk.
+
+![](/static/pesquisa.png)
 ### Notas  
 <span id="f1"></span> [**S**earch **P**rocessing **L**anguage](https://docs.splunk.com/Documentation/Splunk/latest/Search/Aboutthesearchlanguage) [$\hookleftarrow$](#a1)

@@ -1,0 +1,11 @@
+[monitor:///var/log/nginx/access.log]
+index = main
+sourcetype = nginx_access
+
+[monitor:///var/log/nginx/error.log]
+index = main
+sourcetype = nginx_error
+
+[journalctl:///usr/bin/journalctl]
+sourcetype = journal
+index = main

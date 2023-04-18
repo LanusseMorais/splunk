@@ -8,14 +8,21 @@
     name: splunk
     comment: splunk user
 
+- name: Download instalador para máquina local
+  local_action:
+    module: get_url
+    url: "{{splunk_url_download}}"
+    dest: ../pacotes/
+  register: splunk_pacote
+
 - name: Copia instalador da máquina local
   copy:
-    src: /home/lanusse/Downloads/splunk-9.0.1-82c987350fde-linux-2.6-x86_64.rpm
+    src: "../pacotes/{{splunk_pacote.dest|basename}}"
     dest: /tmp/
 
 - name: Instalando Splunk
   dnf:
-    name: "/tmp/splunk-9.0.1-82c987350fde-linux-2.6-x86_64.rpm"
+    name: "/tmp/{{splunk_pacote.dest|basename}}"
     disable_gpg_check: yes
     state: installed
 
@@ -35,9 +42,15 @@
 
 - name: Configurando senha de Admin
   shell: /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd {{splunk_pass_admin}}
+  become_user: splunk
+
+- name: habilitando listen 9997
+  shell: /opt/splunk/bin/splunk enable listen 9997 -auth admin:{{splunk_pass_admin}}
+  become_user: splunk
 
 - name: Parando processo do splunk
   shell: /opt/splunk/bin/splunk stop
+  become_user: splunk
 
 - name: Criando unit service do Splunk
   shell: /opt/splunk/bin/splunk enable boot-start -systemd-managed 1 -user splunk -group splunk

@@ -1,0 +1,7 @@
+---
+splunk_name_cluster_indexer: splunk_name_cluster_indexer
+splunk_secret_cluster_indexer: splunk_secret_cluster_indexer
+splunk_pass_admin: splunk_pass_admin
+splunk_replication_factor: splunk_replication_factor
+splunk_search_factor: splunk_search_factor
+splunk_master_ip: splunk_master_ip

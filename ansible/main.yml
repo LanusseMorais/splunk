@@ -2,5 +2,9 @@
 - hosts: all
   become:  true
   roles:
-    - {role: splunk-install}
+    - {role: splunk-install,when: "'splunk' in group_names"}
+    - {role: splunk-indexers, when: "['splunk_master','indexers'] in group_names"}
+    - {role: splunk-search-heads, when: "'searchs' in group_names"}
+    - {role: nginx, when: "'ngnix' in group_names"}
+    - {role: flask, when: "'app' in group_names"}
     

@@ -1,0 +1,11 @@
+---
+- name: Verifica se o NGINX está instalado
+  ansible.builtin.stat:
+    path: /sbin/nginx
+  register: nginx_bin
+
+- import_tasks: install.yml
+  when: not nginx_bin.stat.exists
+
+- import_tasks: configure.yml
+  when: not nginx_bin.stat.exists

@@ -1,0 +1,6 @@
+---
+- import_tasks: master.yml
+  when: splunk-master is defined
+
+- import_tasks: indexer.yml
+  when: not splunk-master is defined

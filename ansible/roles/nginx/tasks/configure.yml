@@ -1,0 +1,28 @@
+- name: Cria arquivo de configuração search.conf
+  template:
+    src: search.conf.j2
+    dest: /etc/nginx/conf.d/search.conf
+    owner: nginx
+    group: nginx
+    mode: "0644"
+  when: "'searchs' in group_names"
+
+- name: Cria arquivo de configuração app.conf
+  template:
+    src: app.conf.j2
+    dest: /etc/nginx/conf.d/app.conf
+    owner: nginx
+    group: nginx
+    mode: "0644"
+  when: "'app' in group_names"
+
+- name: Desabilitar SELinux
+  selinux:
+    state: disabled
+
+- name: Reiniciando serviço do NGINX
+  systemd:
+    daemon_reload: yes
+    name: nginx
+    state: restarted
+    enabled: yes

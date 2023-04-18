@@ -1,0 +1,69 @@
+---
+- name: Download instalador para máquina local
+  local_action:
+    module: get_url
+    url: "{{splunk_fowarder_url_download}}"
+    dest: ../pacotes/
+  register: splunk_pacote_fowarder
+
+- name: Copia instalador da máquina local
+  copy:
+    src: "../pacotes/{{splunk_pacote_fowarder.dest|basename}}"
+    dest: /tmp/
+
+- name: Criando usuario splunk
+  user:
+    name: splunk
+    comment: splunk user
+
+- name: Instalando Splunk-Fowarder
+  dnf:
+    name: "/tmp/{{splunk_pacote_fowarder.dest|basename}}"
+    disable_gpg_check: yes
+    state: installed
+
+- name: Ajustando permissão no dir /opt/splunkforwarder para o user splunk
+  file:
+    dest: /opt/splunkforwarder
+    owner: splunk
+    group: splunk
+    mode: u+rw
+    recurse: yes
+
+- name: Criando env_var SPLUNK_HOME
+  lineinfile:
+    dest: /etc/profile.d/splunk_var.sh
+    line: "export SPLUNK_HOME=/opt/splunkforwarder/"
+    create: yes
+    state: present
+
+- name: Adicionando os comandos do splunk ao PATH
+  lineinfile:
+    dest: /etc/profile.d/custom_path.sh
+    line: "export PATH=$PATH:/opt/splunkforwarder/bin"
+    create: yes
+    state: present
+
+- name: Configurando senha de Admin
+  shell: /opt/splunkforwarder/bin/splunk start --accept-license --answer-yes --no-prompt --seed-passwd {{splunk_pass_admin}}
+  become_user: splunk
+
+- name: Parando processo do splunk
+  shell: /opt/splunkforwarder/bin/splunk stop
+  become_user: splunk
+
+- name: Criando unit service do Splunk
+  shell: /opt/splunkforwarder/bin/splunk enable boot-start -systemd-managed 1 -user splunk -group splunk
+
+- name: Ajustando unit SplunkForwarder
+  lineinfile:
+    path: /etc/systemd/system/SplunkForwarder.service
+    regexp: "ExecStartPost"
+    line: "ExecStartPre"
+    state: present
+
+- name: Iniciando serviço SplunkForwarder
+  systemd:
+    name: SplunkForwarder
+    state: restarted
+    enabled: yes
